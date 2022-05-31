@@ -2,6 +2,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddAuthentication("Identity.Login")
+    .AddCookie("Identity.Login", config =>
+    {
+        config.Cookie.Name = "Identity.Login";
+        config.LoginPath = "/Login";
+        config.AccessDeniedPath = "/Home";
+        config.ExpireTimeSpan = TimeSpan.FromHours(1);
+    });
 
 var app = builder.Build();
 
@@ -18,6 +26,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
